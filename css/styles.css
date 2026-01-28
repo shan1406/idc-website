@@ -294,6 +294,12 @@ input, textarea, select {
     letter-spacing: 0.05em;
 }
 
+.logo-image {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
 .nav-menu {
     display: flex;
     align-items: center;
@@ -878,6 +884,21 @@ input, textarea, select {
     z-index: 1;
 }
 
+.case-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: var(--radius-lg);
+    object-fit: cover;
+    box-shadow: var(--shadow-lg);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.case-study:hover .case-image {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-xl);
+}
+
 /* ----------------------------------------
    Why IDC Section
    ---------------------------------------- */
@@ -1123,6 +1144,14 @@ input, textarea, select {
 
 .footer-logo .logo-tagline {
     color: rgba(255, 255, 255, 0.5);
+}
+
+.footer-logo-image {
+    height: 45px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
 }
 
 .footer-desc {
