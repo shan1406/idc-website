@@ -292,9 +292,7 @@ const ContactForm = {
     },
     
     handleSubmit(e) {
-        e.preventDefault();
-        
-        // Validate all fields
+        // Validate all fields before submission
         const fields = this.form.querySelectorAll('input[required], textarea[required]');
         let isValid = true;
         
@@ -304,9 +302,17 @@ const ContactForm = {
             }
         });
         
-        if (isValid) {
-            this.submitForm();
+        if (!isValid) {
+            e.preventDefault();
+            return;
         }
+        
+        // Show loading state
+        const submitBtn = this.form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Sending...</span>';
+        
+        // Form will submit naturally to Web3Forms
     },
     
     validateField(field) {

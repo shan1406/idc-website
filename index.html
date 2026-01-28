@@ -519,7 +519,14 @@
                     </div>
                 </div>
                 <div class="contact-form-wrapper">
-                    <form class="contact-form" id="contact-form">
+                    <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                        <!-- Web3Forms Access Key - emails will be sent to snigdh.katiyar@gmail.com -->
+                        <input type="hidden" name="access_key" value="569cec81-64cc-4439-be56-b5a495a4061d">
+                        <input type="hidden" name="subject" value="New Contact from IDC Website">
+                        <input type="hidden" name="from_name" value="IDC Website">
+                        <input type="hidden" name="redirect" value="https://growwithidc.space/?submitted=true">
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                        
                         <div class="form-group">
                             <label for="name">Your Name</label>
                             <input type="text" id="name" name="name" required placeholder="John Doe">
