@@ -10,7 +10,119 @@ document.addEventListener('DOMContentLoaded', () => {
     ScrollAnimations.init();
     SmoothScroll.init();
     ContactForm.init();
+    TestimonialCarousel.init();
 });
+
+/**
+ * Testimonial Carousel Module
+ * Handles testimonial slider functionality
+ */
+const TestimonialCarousel = {
+    currentSlide: 0,
+    totalSlides: 0,
+    autoPlayInterval: null,
+    
+    init() {
+        this.track = document.getElementById('testimonial-track');
+        this.dotsContainer = document.getElementById('carousel-dots');
+        this.prevBtn = document.getElementById('carousel-prev');
+        this.nextBtn = document.getElementById('carousel-next');
+        
+        if (!this.track) return;
+        
+        this.slides = this.track.querySelectorAll('.testimonial-slide');
+        this.totalSlides = this.slides.length;
+        
+        this.createDots();
+        this.bindEvents();
+        this.startAutoPlay();
+    },
+    
+    createDots() {
+        for (let i = 0; i < this.totalSlides; i++) {
+            const dot = document.createElement('button');
+            dot.className = `carousel-dot${i === 0 ? ' active' : ''}`;
+            dot.setAttribute('aria-label', `Go to testimonial ${i + 1}`);
+            dot.addEventListener('click', () => this.goToSlide(i));
+            this.dotsContainer.appendChild(dot);
+        }
+        this.dots = this.dotsContainer.querySelectorAll('.carousel-dot');
+    },
+    
+    bindEvents() {
+        this.prevBtn.addEventListener('click', () => this.prevSlide());
+        this.nextBtn.addEventListener('click', () => this.nextSlide());
+        
+        // Pause on hover
+        const carousel = document.getElementById('testimonial-carousel');
+        carousel.addEventListener('mouseenter', () => this.stopAutoPlay());
+        carousel.addEventListener('mouseleave', () => this.startAutoPlay());
+        
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        this.track.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        this.track.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            this.handleSwipe(touchStartX, touchEndX);
+        }, { passive: true });
+    },
+    
+    handleSwipe(startX, endX) {
+        const threshold = 50;
+        const diff = startX - endX;
+        
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                this.nextSlide();
+            } else {
+                this.prevSlide();
+            }
+        }
+    },
+    
+    goToSlide(index) {
+        this.currentSlide = index;
+        this.updateCarousel();
+    },
+    
+    nextSlide() {
+        this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+        this.updateCarousel();
+    },
+    
+    prevSlide() {
+        this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+        this.updateCarousel();
+    },
+    
+    updateCarousel() {
+        // Move track
+        const offset = -this.currentSlide * 100;
+        this.track.style.transform = `translateX(${offset}%)`;
+        
+        // Update dots
+        this.dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentSlide);
+        });
+    },
+    
+    startAutoPlay() {
+        this.stopAutoPlay();
+        this.autoPlayInterval = setInterval(() => this.nextSlide(), 5000);
+    },
+    
+    stopAutoPlay() {
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+            this.autoPlayInterval = null;
+        }
+    }
+};
 
 /**
  * Navigation Module
